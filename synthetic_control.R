@@ -6,7 +6,7 @@ library(Synth)
 library(SCtools)
 
 
-# treatment_cities[1, "city_id"]
+#treatment_cities[1, "city_id"]
 # 
 # i = 13
 # 
@@ -35,19 +35,35 @@ library(SCtools)
 # 
 # gaps.plot(dataprep.res = dataprep.out,synth.res = synth.out)
 
+df <- arctic1807[, c('City', 'dummy_time', 'dummy_space', 'city_id', 't',"P_avg_per_m_sec"  ) ]
+df$treatment = df$dummy_time * df$dummy_space
+df = df[df$t>=40 & df$city_id %in% 
+          c(481, 482, 483, 484, 485, 487, 489, 490, 491, 493, 494, 495), ]
+
+# df = df[df$t>=1 & (df$City == 'Абаза'| df$City == 'Абакан' | df$City == 'Апатиты'), ]
+
+df$P_avg_per_m_sec_scaled = (df$P_avg_per_m_sec-mean(df$P_avg_per_m_sec))/sd(df$P_avg_per_m_sec) 
 
 summary(df)
-df$treatment = df$dummy_time * df$dummy_space
-data = scdataMulti(df[df$year >=2023 & (df$City == 'Абаза'| df$City == 'Абакан' | df$City == 'Апатиты'), ], id.var = 'City', time.var = 't'
-                   , outcome.var =  "P_avg_per_m_new"
+hist(df$P_avg_per_m_sec_scaled)
+
+
+data = scdataMulti(df, id.var = 'city_id', time.var = 't'
+                   , outcome.var =  "P_avg_per_m_sec_scaled"
                    , treatment.var =  'treatment'
                    , post.est = 10
-                   , units.est = c('Апатиты')
+                   , units.est = c(481)
+                   
                    ) 
-df[df$City == 'Апатиты', ]
-scpi_germany
 
-df[df$year >=2023 & (df$City == 'Абаза'| df$City == 'Абакан' | df$City == 'Апатиты'),]
+model = scest(data, solver = 'ECOS_BB'
+              , w.constr = list(name = "ols"))
+
+model
+summary(model)
+scplotMulti(model)
+
+df[df$city_id==481,]
 
 
 # datager <- scpi_germany
