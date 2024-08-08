@@ -1,6 +1,13 @@
+#install.packages("scpi") # nolint: commented_code_linter.
+#install.packages("Synth") # nolint: commented_code_linter.
+#install.packages("SCtools") # nolint: commented_code_linter.
+
 library(scpi)
 library(Synth)
 library(SCtools)
+library(data.table)
+
+arctic1807 <- fread("arctic1807.csv")
 
 df <- arctic1807[,
                  c("City", "dummy_time", "dummy_space",
