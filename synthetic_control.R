@@ -1,7 +1,3 @@
-#install.packages("scpi") # nolint: commented_code_linter.
-#install.packages("Synth") # nolint: commented_code_linter.
-#install.packages("SCtools") # nolint: commented_code_linter.
-
 library(scpi)
 library(Synth)
 library(SCtools)
