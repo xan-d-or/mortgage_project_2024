@@ -1,5 +1,3 @@
-## Luka Modrić >>> (honorary tribute)
-Luka Modric collecting standing ovations like infinity stones. My absolute goat]
 
 
 # Mortgage Project 2024
